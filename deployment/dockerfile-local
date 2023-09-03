@@ -1,0 +1,23 @@
+FROM golang:1.18.1-alpine3.15 as builder
+
+
+# Install some build deps + ssh tools for the setup below.
+RUN apk update && apk --no-cache add  build-base  git bash  coreutils openssh  openssl
+
+# Create the directory where the application will reside
+RUN mkdir -p /go/src/github.com/verryp/gue-eco-test
+
+# Install hot reloader for if file has changes
+RUN env GO111MODULE=on go install github.com/cortesi/modd/cmd/modd@latest
+
+# Setting timezone
+ENV TZ=Asia/Jakarta
+RUN apk add -U tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# build
+COPY deployment/reloader-dev.conf /go
+
+WORKDIR /go/src/github.com/verryp/gue-eco-test
+
+CMD ["modd","-f", "/go/reloader-dev.conf"]

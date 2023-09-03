@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  gue-product:
+    container_name: gue-product
+    build:
+      context: .
+      dockerfile: deployment/dockerfile-local
+    hostname: gue-product
+    working_dir: /go/src/github.com/verryp/gue-eco-test
+    ports:
+      - 9080:8081
+    volumes:
+      - .:/go/src/github.com/verryp/gue-eco-test
+    networks:
+      - gue-network
+    depends_on:
+      - gue-mariadb
+    command: sh -c "modd -f /go/reloader-dev.conf"
+  gue-mariadb:
+    container_name: gue-mariadb
+    image: mariadb
+    restart: always
+    hostname: gue-mariadb
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_DATABASE=gue_eco_db
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Jakarta
+    ports:
+      - 3309:3306
+    volumes:
+      - gue-mariadb:/var/lib/mysql
+    networks:
+      - gue-network
+
+volumes:
+  gue-mariadb:
+    driver: local
+networks:
+  gue-network:
+    driver: bridge
