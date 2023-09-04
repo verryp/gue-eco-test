@@ -42,6 +42,7 @@ func (rtr *router) Route() *fiber.App {
 	addCart := cart.NewAddCartHandler(rtr.opt)
 
 	// orders
+	orderList := order.NewOrderListHandler(rtr.opt)
 	checkout := order.NewCheckoutHandler(rtr.opt)
 	updateOrderAggregator := aggregator.NewUpdateOrderAggregator(rtr.opt, map[string]handler.Handler{
 		consts.OrderStatusCanceled: updateOrder.NewCancelHandler(rtr.opt),
@@ -55,6 +56,7 @@ func (rtr *router) Route() *fiber.App {
 	v1 := app.Group("v1")
 
 	orders := v1.Group("/orders")
+	orders.Get("/", orderList.Execute)
 	orders.Post("/checkout", checkout.Execute)
 	orders.Put("/:order_id", updateOrderAggregator.Execute)
 
