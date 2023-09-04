@@ -24,4 +24,7 @@ const (
 
 	// ResponseMessageNoDataUpdated const
 	ResponseMessageNoDataUpdated = "No data is updated"
+
+	// ResponseMessageOrderFailedCreated const
+	ResponseMessageOrderFailedCreated = "Order failed created"
 )

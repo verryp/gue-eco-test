@@ -27,6 +27,7 @@ type (
 	}
 
 	IOrderService interface {
-		//
+		Create(ctx context.Context, req presentation.CheckoutRequest) (resp *presentation.CheckoutResponse, err error)
+		Cancel(ctx context.Context, req presentation.CancelOrderRequest) (*presentation.CheckoutResponse, error)
 	}
 )

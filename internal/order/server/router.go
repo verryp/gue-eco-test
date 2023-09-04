@@ -3,8 +3,12 @@ package server
 import (
 	"github.com/gofiber/fiber"
 	"github.com/verryp/gue-eco-test/internal/order/common"
+	"github.com/verryp/gue-eco-test/internal/order/consts"
 	"github.com/verryp/gue-eco-test/internal/order/handler"
+	"github.com/verryp/gue-eco-test/internal/order/handler/aggregator"
 	"github.com/verryp/gue-eco-test/internal/order/handler/v1/cart"
+	"github.com/verryp/gue-eco-test/internal/order/handler/v1/order"
+	updateOrder "github.com/verryp/gue-eco-test/internal/order/handler/v1/order/update"
 )
 
 type (
@@ -38,6 +42,10 @@ func (rtr *router) Route() *fiber.App {
 	addCart := cart.NewAddCartHandler(rtr.opt)
 
 	// orders
+	checkout := order.NewCheckoutHandler(rtr.opt)
+	updateOrderAggregator := aggregator.NewUpdateOrderAggregator(rtr.opt, map[string]handler.Handler{
+		consts.OrderStatusCanceled: updateOrder.NewCancelHandler(rtr.opt),
+	})
 
 	app := fiber.New()
 
@@ -46,7 +54,9 @@ func (rtr *router) Route() *fiber.App {
 
 	v1 := app.Group("v1")
 
-	_ = v1.Group("/orders")
+	orders := v1.Group("/orders")
+	orders.Post("/checkout", checkout.Execute)
+	orders.Put("/:order_id", updateOrderAggregator.Execute)
 
 	carts := v1.Group("/carts")
 	carts.Post("/", addCart.Execute)

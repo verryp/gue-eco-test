@@ -62,9 +62,11 @@ func Start() {
 
 func wiringServerRepository(opt *repository.Option) *repository.Repository {
 	orderRepo := repository.NewOrderRepo(opt)
+	orderDetailRepo := repository.NewOrderDetailRepo(opt)
 
 	return &repository.Repository{
-		Order: orderRepo,
+		Order:       orderRepo,
+		OrderDetail: orderDetailRepo,
 	}
 }
 
@@ -74,10 +76,12 @@ func wiringServerService(opt *service.Option) *service.Service {
 
 	healthCheck := service.NewHealthCheckService(opt)
 	cartSvc := service.NewCartService(opt)
+	orderSvc := service.NewOrderService(opt)
 
 	return &service.Service{
 		HealthCheck: healthCheck,
 		Cart:        cartSvc,
+		Order:       orderSvc,
 	}
 }
 
