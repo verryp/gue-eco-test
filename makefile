@@ -44,6 +44,6 @@ compose.down:
 .PHONY: compose.clean
 compose.clean:
 	@echo "Clean all container..."
-	docker-compose stop
-	docker-compose rm
+	docker-compose -f deployment/docker-compose.yaml --project-directory . stop
+	docker-compose -f deployment/docker-compose.yaml --project-directory . rm
 	docker-compose -f deployment/docker-compose.yaml --project-directory . down -v

@@ -7,9 +7,9 @@ import (
 	"github.com/rs/zerolog/log"
 	migrate "github.com/rubenv/sql-migrate"
 	"github.com/spf13/cobra"
-	"github.com/verryp/gue-eco-test/internal/order/common"
-	"github.com/verryp/gue-eco-test/internal/order/driver"
-	"github.com/verryp/gue-eco-test/internal/order/server"
+	"github.com/verryp/gue-eco-test/internal/auth/common"
+	"github.com/verryp/gue-eco-test/internal/auth/driver"
+	"github.com/verryp/gue-eco-test/internal/auth/server"
 )
 
 func Run() {
@@ -17,9 +17,9 @@ func Run() {
 
 	cmds := []*cobra.Command{
 		{
-			Use:   "serve-http-order",
-			Short: "Serve Order",
-			Long:  "Run Order Services",
+			Use:   "serve-http-auth",
+			Short: "Serve User",
+			Long:  "Run User Services",
 			Run: func(cmd *cobra.Command, args []string) {
 				server.Start()
 			},
@@ -68,7 +68,7 @@ func Run() {
 
 func getMigrateSrc() migrate.FileMigrationSource {
 	src := migrate.FileMigrationSource{
-		Dir: "migrations/sql/order",
+		Dir: "migrations/sql/user",
 	}
 
 	return src

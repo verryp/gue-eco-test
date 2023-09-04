@@ -33,6 +33,22 @@ services:
     depends_on:
       - gue-mariadb
     command: modd -f /go/order-reloader.conf
+  gue-auth:
+    container_name: gue-auth
+    build:
+      context: .
+      dockerfile: deployment/dockerfile-local
+    hostname: gue-auth
+    working_dir: /go/src/github.com/verryp/gue-eco-test
+    ports:
+      - 9082:8083
+    volumes:
+      - .:/go/src/github.com/verryp/gue-eco-test
+    networks:
+      - gue-network
+    depends_on:
+      - gue-mariadb
+    command: modd -f /go/auth-reloader.conf
   gue-mariadb:
     container_name: gue-mariadb
     image: mariadb

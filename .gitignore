@@ -9,6 +9,7 @@
 *.dylib
 product
 order
+auth
 
 # Test binary, built with `go test -c`
 *.test
@@ -45,3 +46,4 @@ Thumbs.db
 # env
 deployment/product/cfg.yaml
 deployment/order/cfg.yaml
+deployment/auth/cfg.yaml

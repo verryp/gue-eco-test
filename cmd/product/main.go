@@ -18,8 +18,8 @@ func Run() {
 	cmds := []*cobra.Command{
 		{
 			Use:   "serve-http-product",
-			Short: "Serve Order",
-			Long:  "Run Order Services",
+			Short: "Serve Product",
+			Long:  "Run Product Services",
 			Run: func(cmd *cobra.Command, args []string) {
 				server.Start()
 			},
