@@ -1,0 +1,32 @@
+package service
+
+import (
+	"context"
+
+	"github.com/verryp/gue-eco-test/internal/order/common"
+	"github.com/verryp/gue-eco-test/internal/order/presentation"
+	"github.com/verryp/gue-eco-test/internal/order/repository"
+)
+
+type (
+	Option struct {
+		*common.Option
+		Repository *repository.Repository
+	}
+
+	Service struct {
+		HealthCheck IHealthCheck
+		Order       IOrderService
+		Cart        ICartService
+	}
+)
+
+type (
+	ICartService interface {
+		Add(ctx context.Context, req presentation.AddCartRequest) (err error)
+	}
+
+	IOrderService interface {
+		//
+	}
+)

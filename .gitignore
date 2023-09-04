@@ -8,6 +8,7 @@
 *.so
 *.dylib
 product
+order
 
 # Test binary, built with `go test -c`
 *.test
@@ -42,4 +43,5 @@ go.work
 Thumbs.db
 
 # env
-deployment/product-cfg.yaml
+deployment/product/cfg.yaml
+deployment/order/cfg.yaml

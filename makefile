@@ -34,7 +34,7 @@ run:
 .PHONY: compose.up
 compose.up:
 	@echo "Running all container..."
-	docker-compose -f deployment/docker-compose.yaml --project-directory . up --build
+	docker-compose -f deployment/docker-compose.yaml --project-directory . up -d --build
 
 .PHONY: compose.down
 compose.down:

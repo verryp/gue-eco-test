@@ -16,7 +16,23 @@ services:
       - gue-network
     depends_on:
       - gue-mariadb
-    command: sh -c "modd -f /go/reloader-dev.conf"
+    command: modd -f /go/product-reloader.conf
+  gue-order:
+    container_name: gue-order
+    build:
+      context: .
+      dockerfile: deployment/dockerfile-local
+    hostname: gue-order
+    working_dir: /go/src/github.com/verryp/gue-eco-test
+    ports:
+      - 9081:8082
+    volumes:
+      - .:/go/src/github.com/verryp/gue-eco-test
+    networks:
+      - gue-network
+    depends_on:
+      - gue-mariadb
+    command: modd -f /go/order-reloader.conf
   gue-mariadb:
     container_name: gue-mariadb
     image: mariadb

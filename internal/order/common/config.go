@@ -29,7 +29,7 @@ type Config struct {
 func NewConfig() (conf *Config, err error) {
 
 	v := viper.New()
-	v.AddConfigPath("./deployment/product")
+	v.AddConfigPath("./deployment/order")
 	v.SetConfigName("cfg")
 	v.SetConfigType("yaml")
 

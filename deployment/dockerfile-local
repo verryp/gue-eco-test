@@ -16,8 +16,6 @@ RUN apk add -U tzdata
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # build
-COPY deployment/reloader-dev.conf /go
+COPY deployment/*/*-reloader.conf /go
 
 WORKDIR /go/src/github.com/verryp/gue-eco-test
-
-CMD ["modd","-f", "/go/reloader-dev.conf"]
