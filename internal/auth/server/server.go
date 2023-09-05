@@ -6,6 +6,7 @@ import (
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/driver"
 	"github.com/verryp/gue-eco-test/internal/auth/handler"
+	"github.com/verryp/gue-eco-test/internal/auth/model"
 	"github.com/verryp/gue-eco-test/internal/auth/repository"
 	"github.com/verryp/gue-eco-test/internal/auth/service"
 	"github.com/verryp/gue-eco-test/pkg/generator"
@@ -60,8 +61,10 @@ func Start() {
 }
 
 func wiringServerRepository(opt *repository.Option) *repository.Repository {
+	userRepo := repository.NewUserRepo(opt)
+
 	return &repository.Repository{
-		//
+		User: userRepo,
 	}
 }
 
@@ -70,12 +73,14 @@ func wiringServerService(opt *service.Option) *service.Service {
 	generator.New(1)
 
 	healthCheck := service.NewHealthCheckService(opt)
+	auth := service.NewAuthService(opt)
 
 	return &service.Service{
 		HealthCheck: healthCheck,
+		Auth:        auth,
 	}
 }
 
 func initDB(db *gorp.DbMap) {
-	// db.AddTableWithName(model.Order{}, "orders").SetKeys(false, "id")
+	db.AddTableWithName(model.User{}, "users").SetKeys(false, "id")
 }

@@ -1,7 +1,10 @@
 package service
 
 import (
+	"context"
+
 	"github.com/verryp/gue-eco-test/internal/auth/common"
+	"github.com/verryp/gue-eco-test/internal/auth/presentation"
 	"github.com/verryp/gue-eco-test/internal/auth/repository"
 )
 
@@ -13,12 +16,12 @@ type (
 
 	Service struct {
 		HealthCheck IHealthCheck
-		User        IUserService
+		Auth        IAuthService
 	}
 )
 
 type (
-	IUserService interface {
-		//
+	IAuthService interface {
+		Register(ctx context.Context, req presentation.SignUpRequest) error
 	}
 )

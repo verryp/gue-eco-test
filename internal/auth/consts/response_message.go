@@ -27,4 +27,7 @@ const (
 
 	// ResponseMessageOrderFailedCreated const
 	ResponseMessageOrderFailedCreated = "Order failed created"
+
+	// ResponseMessageSuccessSignup const
+	ResponseMessageSuccessSignup = "Successfully signed up"
 )

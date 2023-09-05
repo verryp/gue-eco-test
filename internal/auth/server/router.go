@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber"
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/handler"
+	"github.com/verryp/gue-eco-test/internal/auth/handler/v1/register"
 )
 
 type (
@@ -32,12 +33,19 @@ func NewRouter(cfg *common.Config, opt *handler.Option) Router {
 func (rtr *router) Route() *fiber.App {
 	// health check
 	hcHandler := handler.NewHealthCheckHandler(rtr.opt)
+
+	// register
+	signup := register.NewSignupHandler(rtr.opt)
+
 	app := fiber.New()
 
 	health := app.Group("health")
 	health.Get("/readiness", hcHandler.Readiness)
 
-	_ = app.Group("v1")
+	v1 := app.Group("v1")
+
+	auth := v1.Group("/auth")
+	auth.Post("/signup", signup.Execute)
 
 	return app
 }
