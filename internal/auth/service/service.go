@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/verryp/gue-eco-test/internal/auth/authenticator"
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/presentation"
@@ -14,6 +15,7 @@ type (
 		*common.Option
 		Repository    *repository.Repository
 		Authenticator authenticator.Authenticator
+		Cache         *redis.Client
 	}
 
 	Service struct {
@@ -29,5 +31,6 @@ type (
 		ValidateToken(ctx context.Context, token string) (*presentation.ValidateTokenResponse, error)
 		Login(ctx context.Context, pathURL string, req presentation.SignInRequest) (*presentation.SignInResponse, error)
 		RefreshToken(ctx context.Context, req presentation.ReTokenRequest) (*presentation.SignInResponse, error)
+		BlackListToken(ctx context.Context, token string) (err error)
 	}
 )

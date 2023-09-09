@@ -24,4 +24,7 @@ const (
 
 	// ResponseMessageSuccessRefreshToken const
 	ResponseMessageSuccessRefreshToken = "Token is refreshed"
+
+	// ResponseMessageSuccessSignOut const
+	ResponseMessageSuccessSignOut = "Successfully signed out"
 )
