@@ -35,12 +35,11 @@ func (rtr *router) Route() *fiber.App {
 	// health check
 	hcHandler := handler.NewHealthCheckHandler(rtr.opt)
 
-	// register
+	// auth
 	signup := register.NewSignupHandler(rtr.opt)
-
-	// client authorization
 	authorizeClient := grant.NewClientAuthorization(rtr.opt)
 	validateToken := grant.NewValidateTokenHandler(rtr.opt)
+	signin := grant.NewSignInHandler(rtr.opt)
 
 	app := fiber.New()
 
@@ -54,6 +53,15 @@ func (rtr *router) Route() *fiber.App {
 
 	auth.Post("/authorize", authorizeClient.Execute)
 	auth.Post("/token", validateToken.Execute)
+	auth.Post("/signin", func(c *fiber.Ctx) error {
+		clientId := c.Get("X-Client-Id")
+
+		if clientId == "" {
+			return c.SendStatus(fiber.StatusUnauthorized)
+		}
+
+		return c.Next()
+	}, signin.Execute)
 
 	return app
 }

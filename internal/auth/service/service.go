@@ -27,5 +27,6 @@ type (
 		Register(ctx context.Context, req presentation.SignUpRequest) error
 		ClientAuthorization(ctx context.Context, apiKey, path string) (*presentation.GenerateClientTokenResponse, error)
 		ValidateToken(ctx context.Context, token string) (*presentation.ValidateTokenResponse, error)
+		Login(ctx context.Context, pathURL string, req presentation.SignInRequest) (*presentation.SignInResponse, error)
 	}
 )

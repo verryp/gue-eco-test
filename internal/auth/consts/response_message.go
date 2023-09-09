@@ -18,4 +18,7 @@ const (
 
 	// ResponseMessageTokenValidated const
 	ResponseMessageTokenValidated = "Token is valid"
+
+	// ResponseMessageSuccessSignIn const
+	ResponseMessageSuccessSignIn = "Successfully signed in"
 )

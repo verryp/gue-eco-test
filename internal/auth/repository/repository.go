@@ -24,6 +24,7 @@ type (
 	UserRepo interface {
 		Create(ctx context.Context, user *model.User) error
 		FindByID(ctx context.Context, id string) (cl *model.User, err error)
+		FindByEmail(ctx context.Context, email string) (cl *model.User, err error)
 	}
 
 	ClientRepo interface {
