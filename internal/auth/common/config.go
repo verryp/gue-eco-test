@@ -21,17 +21,26 @@ type DB struct {
 }
 
 type Config struct {
-	Server Server
-	DB     DB
-	Log    Log
+	Server      Server
+	DB          DB
+	Log         Log
+	TokenExpiry TokenExpiry `json:"token_expiry" mapstructure:"token_expiry"`
+}
+
+type TokenExpiry struct {
+	Guest   int64
+	Access  int64
+	Refresh int64
 }
 
 func NewConfig() (conf *Config, err error) {
 
-	v := viper.New()
+	v := viper.NewWithOptions()
 	v.AddConfigPath("./deployment/auth")
 	v.SetConfigName("cfg")
 	v.SetConfigType("yaml")
+
+	viper.Unmarshal(&conf)
 
 	err = v.ReadInConfig()
 	if err != nil {

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/service"
 )
@@ -13,6 +13,6 @@ type (
 	}
 
 	Handler interface {
-		Execute(c *fiber.Ctx)
+		Execute(c *fiber.Ctx) error
 	}
 )

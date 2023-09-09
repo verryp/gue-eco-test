@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS clients (
 INSERT INTO
     clients (name, api_key, algorithm, location, public_cert, private_cert, created_at)
 VALUES
-    ("GUE Ecosystem", "116wIdYjuZUEF0OrJpaGIFP099uwhSXF", "PS256", "/go/src/github.com/verryp/gue-eco-test", "/deployment/auth/sample_key.pub", "/deployment/auth/sample_key.txt", now());
+    ("GUE Ecosystem", "116wIdYjuZUEF0OrJpaGIFP099uwhSXF", "RS256", "/go/src/github.com/verryp/gue-eco-test", "/deployment/auth/sample_key.pub", "/deployment/auth/sample_key.txt", now());
 
 -- +migrate Down
 DROP TABLE IF EXISTS clients;

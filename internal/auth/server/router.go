@@ -1,9 +1,10 @@
 package server
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/handler"
+	"github.com/verryp/gue-eco-test/internal/auth/handler/v1/grant"
 	"github.com/verryp/gue-eco-test/internal/auth/handler/v1/register"
 )
 
@@ -23,7 +24,7 @@ func NewRouter(cfg *common.Config, opt *handler.Option) Router {
 	return &router{
 		config: cfg,
 		opt:    opt,
-		router: fiber.New(&fiber.Settings{
+		router: fiber.New(fiber.Config{
 			ReadTimeout:  10,
 			WriteTimeout: 10,
 		}),
@@ -37,6 +38,10 @@ func (rtr *router) Route() *fiber.App {
 	// register
 	signup := register.NewSignupHandler(rtr.opt)
 
+	// client authorization
+	authorizeClient := grant.NewClientAuthorization(rtr.opt)
+	validateToken := grant.NewValidateTokenHandler(rtr.opt)
+
 	app := fiber.New()
 
 	health := app.Group("health")
@@ -46,6 +51,9 @@ func (rtr *router) Route() *fiber.App {
 
 	auth := v1.Group("/auth")
 	auth.Post("/signup", signup.Execute)
+
+	auth.Post("/authorize", authorizeClient.Execute)
+	auth.Post("/token", validateToken.Execute)
 
 	return app
 }

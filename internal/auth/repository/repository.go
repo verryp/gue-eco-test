@@ -15,12 +15,19 @@ type (
 	}
 
 	Repository struct {
-		User UserRepo
+		User   UserRepo
+		Client ClientRepo
 	}
 )
 
 type (
 	UserRepo interface {
 		Create(ctx context.Context, user *model.User) error
+		FindByID(ctx context.Context, id string) (cl *model.User, err error)
+	}
+
+	ClientRepo interface {
+		FindByAPIKey(ctx context.Context, apiKey string) (cl *model.Client, err error)
+		FindByID(ctx context.Context, id string) (cl *model.Client, err error)
 	}
 )

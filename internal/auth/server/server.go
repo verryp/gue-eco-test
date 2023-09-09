@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 
+	"github.com/verryp/gue-eco-test/internal/auth/authenticator"
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/driver"
 	"github.com/verryp/gue-eco-test/internal/auth/handler"
@@ -40,8 +41,9 @@ func Start() {
 	})
 
 	svc := wiringServerService(&service.Option{
-		Option:     opt,
-		Repository: repos,
+		Option:        opt,
+		Repository:    repos,
+		Authenticator: authenticator.NewJWTAuthenticator(opt, repos),
 	})
 
 	handlers := &handler.Option{
@@ -62,9 +64,11 @@ func Start() {
 
 func wiringServerRepository(opt *repository.Option) *repository.Repository {
 	userRepo := repository.NewUserRepo(opt)
+	clientRepo := repository.NewClientRepo(opt)
 
 	return &repository.Repository{
-		User: userRepo,
+		User:   userRepo,
+		Client: clientRepo,
 	}
 }
 
@@ -83,4 +87,5 @@ func wiringServerService(opt *service.Option) *service.Service {
 
 func initDB(db *gorp.DbMap) {
 	db.AddTableWithName(model.User{}, "users").SetKeys(false, "id")
+	db.AddTableWithName(model.Client{}, "clients").SetKeys(true, "id")
 }
