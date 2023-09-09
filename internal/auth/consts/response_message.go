@@ -21,4 +21,7 @@ const (
 
 	// ResponseMessageSuccessSignIn const
 	ResponseMessageSuccessSignIn = "Successfully signed in"
+
+	// ResponseMessageSuccessRefreshToken const
+	ResponseMessageSuccessRefreshToken = "Token is refreshed"
 )

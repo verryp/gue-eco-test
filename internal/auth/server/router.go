@@ -40,6 +40,7 @@ func (rtr *router) Route() *fiber.App {
 	authorizeClient := grant.NewClientAuthorization(rtr.opt)
 	validateToken := grant.NewValidateTokenHandler(rtr.opt)
 	signin := grant.NewSignInHandler(rtr.opt)
+	retoken := grant.NewReTokenHandler(rtr.opt)
 
 	app := fiber.New()
 
@@ -62,6 +63,15 @@ func (rtr *router) Route() *fiber.App {
 
 		return c.Next()
 	}, signin.Execute)
+	auth.Post("/retoken", func(c *fiber.Ctx) error {
+		clientId := c.Get("X-Client-Id")
+
+		if clientId == "" {
+			return c.SendStatus(fiber.StatusUnauthorized)
+		}
+
+		return c.Next()
+	}, retoken.Execute)
 
 	return app
 }
