@@ -25,12 +25,19 @@ type Config struct {
 	DB          DB
 	Log         Log
 	TokenExpiry TokenExpiry `json:"token_expiry" mapstructure:"token_expiry"`
+	Redis       Redis
 }
 
 type TokenExpiry struct {
 	Guest   int64
 	Access  int64
 	Refresh int64
+}
+
+type Redis struct {
+	Host     string
+	Password string
+	DB       int
 }
 
 func NewConfig() (conf *Config, err error) {

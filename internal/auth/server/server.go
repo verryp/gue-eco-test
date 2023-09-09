@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/verryp/gue-eco-test/internal/auth/authenticator"
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/driver"
@@ -40,10 +41,19 @@ func Start() {
 		DB:     db,
 	})
 
+	// clients
+	cacher := redis.NewClient(&redis.Options{
+		Addr:     opt.Config.Redis.Host,
+		DB:       opt.Config.Redis.DB,
+		Password: opt.Config.Redis.Password,
+	})
+	authenticates := authenticator.NewJWTAuthenticator(opt, repos)
+
 	svc := wiringServerService(&service.Option{
 		Option:        opt,
 		Repository:    repos,
-		Authenticator: authenticator.NewJWTAuthenticator(opt, repos),
+		Authenticator: authenticates,
+		Cache:         cacher,
 	})
 
 	handlers := &handler.Option{

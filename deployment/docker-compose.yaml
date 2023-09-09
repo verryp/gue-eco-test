@@ -66,6 +66,22 @@ services:
       - gue-mariadb:/var/lib/mysql
     networks:
       - gue-network
+  gue-redis:
+    image: redis
+    container_name: gue-redis
+    hostname: gue-redis
+    ports:
+      - 6479:6379
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '2m'
+        max-file: '5'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+    networks:
+      - gue-network
 
 volumes:
   gue-mariadb:
