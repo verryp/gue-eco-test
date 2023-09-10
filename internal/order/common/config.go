@@ -20,10 +20,21 @@ type DB struct {
 	Name     string
 }
 
+type Dependency struct {
+	Product ProductCfg
+}
+
+type ProductCfg struct {
+	BaseURL           string `json:"base_url" mapstructure:"base_url"`
+	GetDetailItemPath string `json:"get_detail_item_path" mapstructure:"get_detail_item_path"`
+	UpdateItemPath    string `json:"update_item_path" mapstructure:"update_item_path"`
+}
+
 type Config struct {
-	Server Server
-	DB     DB
-	Log    Log
+	Server     Server
+	DB         DB
+	Log        Log
+	Dependency *Dependency
 }
 
 func NewConfig() (conf *Config, err error) {

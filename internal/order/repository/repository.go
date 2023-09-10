@@ -29,6 +29,6 @@ type (
 	}
 
 	OrderDetailRepo interface {
-		FetchByOrderID(ctx context.Context, orderID string) (results []model.OrderDetail, err error)
+		FindByOrderID(ctx context.Context, orderID string) (results *model.OrderDetail, err error)
 	}
 )

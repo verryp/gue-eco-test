@@ -4,12 +4,14 @@ import (
 	"fmt"
 
 	"github.com/verryp/gue-eco-test/internal/order/common"
+	"github.com/verryp/gue-eco-test/internal/order/connector/product"
 	"github.com/verryp/gue-eco-test/internal/order/driver"
 	"github.com/verryp/gue-eco-test/internal/order/handler"
 	"github.com/verryp/gue-eco-test/internal/order/model"
 	"github.com/verryp/gue-eco-test/internal/order/repository"
 	"github.com/verryp/gue-eco-test/internal/order/service"
 	"github.com/verryp/gue-eco-test/pkg/generator"
+	"github.com/verryp/gue-eco-test/pkg/httpclient"
 	"gopkg.in/gorp.v2"
 )
 
@@ -39,9 +41,14 @@ func Start() {
 		DB:     db,
 	})
 
+	// clients
+	productRest := httpclient.NewRestClient(conf.Dependency.Product.BaseURL)
+	productAPI := product.NewProductAPI(conf, productRest)
+
 	svc := wiringServerService(&service.Option{
 		Option:     opt,
 		Repository: repos,
+		ProductAPI: productAPI,
 	})
 
 	handlers := &handler.Option{

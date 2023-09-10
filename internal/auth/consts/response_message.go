@@ -1,8 +1,8 @@
 package consts
 
 const (
-	// ResponseMessageInternalFailure const
-	ResponseMessageInternalFailure = "The internal service had some issues"
+	// ResponseMessageFailedProcessData const
+	ResponseMessageFailedProcessData = "The given data cannot to process."
 
 	// ResponseMessageInvalidRequest const
 	ResponseMessageInvalidRequest = "The requests data is invalid"

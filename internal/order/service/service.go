@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/verryp/gue-eco-test/internal/order/common"
+	"github.com/verryp/gue-eco-test/internal/order/connector/product"
 	"github.com/verryp/gue-eco-test/internal/order/presentation"
 	"github.com/verryp/gue-eco-test/internal/order/repository"
 )
@@ -12,6 +13,7 @@ type (
 	Option struct {
 		*common.Option
 		Repository *repository.Repository
+		ProductAPI product.API
 	}
 
 	Service struct {
