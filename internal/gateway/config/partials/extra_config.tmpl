@@ -1,0 +1,34 @@
+{
+  "telemetry/logging": {
+    "level": "DEBUG",
+    "prefix": "[KRAKEND]",
+    "stdout": true
+  },
+  "security/cors": {
+    "allow_origins": [
+      "*"
+    ],
+    "allow_methods": [
+      "POST",
+      "GET",
+      "PUT"
+    ],
+    "allow_headers": [
+      "Origin",
+      "Authorization",
+      "Content-Type",
+      "X-Client-Id",
+      "X-User-Name",
+      "X-Client-Name",
+      "X-User-Email"
+    ],
+    "expose_headers": [
+      "Content-Length"
+    ],
+    "max_age": "12h"
+  },
+  "plugin/http-server": {
+    "name": "authentication",
+    "auth_url": "http://gue-auth:8083"
+  }
+}

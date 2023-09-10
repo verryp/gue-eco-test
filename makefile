@@ -47,3 +47,8 @@ compose.clean:
 	docker-compose -f deployment/docker-compose.yaml --project-directory . stop
 	docker-compose -f deployment/docker-compose.yaml --project-directory . rm
 	docker-compose -f deployment/docker-compose.yaml --project-directory . down -v
+
+build_plugin:
+	@echo "Compiling plugins..."
+	@go build -buildmode=plugin -v -o ./internal/gateway/plugins/authentication.so ./internal/gateway/plugins/authentication.go
+	@echo "Done compiling plugin"

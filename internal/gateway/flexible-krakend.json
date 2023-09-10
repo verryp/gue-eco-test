@@ -1,0 +1,401 @@
+{
+  "version": 3,
+  "name": "GUE Ecosystem Gateway",
+  "port": 8080,
+  "timeout": "10s",
+  "cache_ttl": "300s",
+  "sequential_start":true,
+  "extra_config": {
+  "telemetry/logging": {
+    "level": "DEBUG",
+    "prefix": "[KRAKEND]",
+    "stdout": true
+  },
+  "security/cors": {
+    "allow_origins": [
+      "*"
+    ],
+    "allow_methods": [
+      "POST",
+      "GET",
+      "PUT"
+    ],
+    "allow_headers": [
+      "Origin",
+      "Authorization",
+      "Content-Type",
+      "X-Client-Id",
+      "X-User-Name",
+      "X-Client-Name",
+      "X-User-Email"
+    ],
+    "expose_headers": [
+      "Content-Length"
+    ],
+    "max_age": "12h"
+  },
+  "plugin/http-server": {
+    "name": "authentication",
+    "auth_url": "http://gue-auth:8083"
+  }
+},
+  "plugin": {
+    "pattern": ".so",
+    "folder": "/etc/krakend/plugins"
+  },
+  "endpoints": [
+    {
+  "endpoint": "/auth/echo",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-auth:8083"
+      ],
+      "url_pattern": "/health/readiness"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/signin",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-auth:8083"
+      ],
+      "url_pattern": "/v1/auth/signin"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/authorize",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-auth:8083"
+      ],
+      "url_pattern": "/v1/auth/authorize"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/signup",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-auth:8083"
+      ],
+      "url_pattern": "/v1/auth/signup"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/signout",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-auth:8083"
+      ],
+      "url_pattern": "/v1/auth/signout"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/retoken",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-auth:8083"
+      ],
+      "url_pattern": "/v1/auth/retoken"
+    }
+  ]
+},
+    {
+  "endpoint": "/orders/echo",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-order:8082"
+      ],
+      "url_pattern": "/health/readiness"
+    }
+  ]
+},
+{
+  "endpoint": "/orders/v1/cart",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-order:8082"
+      ],
+      "url_pattern": "/v1/carts"
+    }
+  ]
+},
+{
+  "endpoint": "/orders/v1/checkout",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-order:8082"
+      ],
+      "url_pattern": "/v1/checkout"
+    }
+  ]
+},
+{
+  "endpoint": "/orders/v1/orders/{order_id}",
+  "method": "PUT",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "PUT",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-order:8082"
+      ],
+      "url_pattern": "/v1/orders/{order_id}"
+    }
+  ]
+},
+{
+  "endpoint": "/orders/v1/orders",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-order:8082"
+      ],
+      "url_pattern": "/v1/orders"
+    }
+  ]
+},
+    {
+  "endpoint": "/products/echo",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-product:8081"
+      ],
+      "url_pattern": "/health/readiness"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-product:8081"
+      ],
+      "url_pattern": "/v1/items"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items/{id}",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-product:8081"
+      ],
+      "url_pattern": "/v1/items/{id}"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items/{id}",
+  "method": "PUT",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "PUT",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-product:8081"
+      ],
+      "url_pattern": "/v1/items/{id}"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "http://gue-product:8081"
+      ],
+      "url_pattern": "/v1/items"
+    }
+  ]
+},
+
+    {
+      "endpoint": "/health",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/__health",
+          "host": ["http://localhost:8080"],
+          "encoding": "no-op",
+          "extra_config": {
+            "backend/http/client": {
+              "proxy_address": "http://gue-gateway:8080"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

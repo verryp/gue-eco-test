@@ -1,0 +1,35 @@
+{
+  "version": 3,
+  "name": "GUE Ecosystem Gateway",
+  "port": 8080,
+  "timeout": "10s",
+  "cache_ttl": "300s",
+  "sequential_start":true,
+  "extra_config": {{ include "extra_config.tmpl" }},
+  "plugin": {
+    "pattern": ".so",
+    "folder": "/etc/krakend/plugins"
+  },
+  "endpoints": [
+    {{ template "auth_endpoint.tmpl" . }},
+    {{ template "order_endpoint.tmpl" . }},
+    {{ template "product_endpoint.tmpl" . }},
+
+    {
+      "endpoint": "/health",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/__health",
+          "host": ["http://localhost:8080"],
+          "encoding": "no-op",
+          "extra_config": {
+            "backend/http/client": {
+              "proxy_address": "http://gue-gateway:8080"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

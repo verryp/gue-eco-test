@@ -82,6 +82,28 @@ services:
       interval: 10s
     networks:
       - gue-network
+  gue-gateway:
+    platform: linux/amd64
+    image: devopsfaith/krakend:2.4.0
+    container_name: gue-gateway
+    hostname: gue-gateway
+    environment:
+      - FC_OUT=/etc/krakend/flexible-krakend.json
+      - FC_DEBUG=true
+      - FC_ENABLE=1
+      - FC_TEMPLATES=/etc/krakend/config/templates
+      - FC_PARTIALS=/etc/krakend/config/partials
+      - FC_SETTINGS=/etc/krakend/config/settings
+    volumes:
+      - ./internal/gateway:/etc/krakend
+    ports:
+      - "1234:1234"
+      - "8080:8080"
+      - "8090:8090"
+    networks:
+      - gue-network
+    working_dir: /etc/krakend
+    command: [ "run", "-d", "-c", "/etc/krakend/krakend.json" ]
 
 volumes:
   gue-mariadb:

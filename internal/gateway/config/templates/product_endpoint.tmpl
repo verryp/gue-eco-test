@@ -1,0 +1,105 @@
+{
+  "endpoint": "/products/echo",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.product_host }}"
+      ],
+      "url_pattern": "/health/readiness"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.product_host }}"
+      ],
+      "url_pattern": "/v1/items"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items/{id}",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.product_host }}"
+      ],
+      "url_pattern": "/v1/items/{id}"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items/{id}",
+  "method": "PUT",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "PUT",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.product_host }}"
+      ],
+      "url_pattern": "/v1/items/{id}"
+    }
+  ]
+},
+{
+  "endpoint": "/products/v1/items",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.product_host }}"
+      ],
+      "url_pattern": "/v1/items"
+    }
+  ]
+}

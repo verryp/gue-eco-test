@@ -1,0 +1,126 @@
+{
+  "endpoint": "/auth/echo",
+  "method": "GET",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "GET",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.auth_host }}"
+      ],
+      "url_pattern": "/health/readiness"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/signin",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.auth_host }}"
+      ],
+      "url_pattern": "/v1/auth/signin"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/authorize",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.auth_host }}"
+      ],
+      "url_pattern": "/v1/auth/authorize"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/signup",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.auth_host }}"
+      ],
+      "url_pattern": "/v1/auth/signup"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/signout",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.auth_host }}"
+      ],
+      "url_pattern": "/v1/auth/signout"
+    }
+  ]
+},
+{
+  "endpoint": "/auth/v1/retoken",
+  "method": "POST",
+  "input_headers": [
+    "*"
+  ],
+  "output_encoding": "no-op",
+  "input_query_strings": [
+    "*"
+  ],
+  "backend": [
+    {
+      "method": "POST",
+      "encoding": "no-op",
+      "host": [
+        "{{ .env.auth_host }}"
+      ],
+      "url_pattern": "/v1/auth/retoken"
+    }
+  ]
+}
