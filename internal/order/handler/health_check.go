@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 )
 
 type healthCheckHandler struct {
@@ -14,20 +14,19 @@ func NewHealthCheckHandler(opt *Option) *healthCheckHandler {
 	return &healthCheckHandler{opt}
 }
 
-func (h *healthCheckHandler) Readiness(c *fiber.Ctx) {
+func (h *healthCheckHandler) Readiness(c *fiber.Ctx) error {
 	ctx := c.Context()
 
 	err := h.Service.HealthCheck.HealthCheck(ctx)
 	if err != nil {
-		c.
+		return c.
 			Status(http.StatusInternalServerError).
-			Send(err.Error())
-		return
+			SendString(err.Error())
 	}
 
 	res := struct {
 		HealthCheck string `json:"status"`
 	}{HealthCheck: "ok"}
 
-	c.JSON(res)
+	return c.JSON(res)
 }

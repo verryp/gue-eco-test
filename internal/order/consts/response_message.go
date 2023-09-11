@@ -27,4 +27,7 @@ const (
 
 	// ResponseMessageOrderFailedCreated const
 	ResponseMessageOrderFailedCreated = "Order failed created"
+
+	// ResponseMessageUnauthorized const
+	ResponseMessageUnauthorized = "Client unauthorized"
 )
