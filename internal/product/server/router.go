@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/verryp/gue-eco-test/internal/product/common"
 	"github.com/verryp/gue-eco-test/internal/product/handler"
 	"github.com/verryp/gue-eco-test/internal/product/handler/v1/items"
@@ -23,7 +23,7 @@ func NewRouter(cfg *common.Config, opt *handler.Option) Router {
 	return &router{
 		config: cfg,
 		opt:    opt,
-		router: fiber.New(&fiber.Settings{
+		router: fiber.New(fiber.Config{
 			ReadTimeout:  10,
 			WriteTimeout: 10,
 		}),

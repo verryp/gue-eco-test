@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/asaskevich/govalidator"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/verryp/gue-eco-test/internal/product/common"
 	"github.com/verryp/gue-eco-test/internal/product/consts"
 	"github.com/verryp/gue-eco-test/internal/product/handler"
@@ -21,7 +21,7 @@ func NewCreateItem(opt *handler.Option) handler.Handler {
 	}
 }
 
-func (h *createItem) Execute(c *fiber.Ctx) {
+func (h *createItem) Execute(c *fiber.Ctx) error {
 	var (
 		req      presentation.CreateItemRequest
 		ctx      = c.Context()
@@ -35,10 +35,9 @@ func (h *createItem) Execute(c *fiber.Ctx) {
 			SetStatus(consts.APIStatusError).
 			SetMessage(consts.ResponseMessageInvalidRequest)
 
-		c.
+		return c.
 			Status(http.StatusBadRequest).
 			JSON(res)
-		return
 	}
 
 	_, err = govalidator.ValidateStruct(req)
@@ -50,10 +49,9 @@ func (h *createItem) Execute(c *fiber.Ctx) {
 			SetMessage(consts.ResponseMessageInvalidRequest).
 			SetErrors(err.Error())
 
-		c.
+		return c.
 			Status(http.StatusBadRequest).
 			JSON(res)
-		return
 	}
 
 	err = h.Service.Item.Create(ctx, req)
@@ -64,31 +62,14 @@ func (h *createItem) Execute(c *fiber.Ctx) {
 			SetStatus(consts.APIStatusError).
 			SetMessage(consts.ResponseMessageFailedProcessData)
 
-		c.
+		return c.
 			Status(http.StatusInternalServerError).
 			JSON(res)
-		return
 	}
 
 	res := response.
 		SetStatus(consts.APIStatusSuccess).
 		SetMessage(consts.ResponseMessageSuccessCreateData)
 
-	c.JSON(res)
-
-	return
+	return c.JSON(res)
 }
-
-// func (h *createItem) validate(req presentation.CreateItemRequest) url.Values {
-// 	v := validator.New()
-// 	errs := v.Struct(&req)
-// 	var ev url.Values
-//
-// 	if errs != nil {
-// 		for _, err := range errs.(validator.ValidationErrors) {
-// 			ev.Add(err.Field(), fmt.Sprintf("is %s", err.Value()))
-// 		}
-// 	}
-//
-// 	return ev
-// }

@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/asaskevich/govalidator"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/verryp/gue-eco-test/internal/product/common"
 	"github.com/verryp/gue-eco-test/internal/product/consts"
 	"github.com/verryp/gue-eco-test/internal/product/handler"
@@ -26,7 +26,7 @@ func NewUpdateItemHandler(opt *handler.Option) handler.Handler {
 	}
 }
 
-func (h *updateItem) Execute(c *fiber.Ctx) {
+func (h *updateItem) Execute(c *fiber.Ctx) error {
 	var (
 		req      presentation.UpdateItemRequest
 		id       = c.Params("id")
@@ -45,10 +45,9 @@ func (h *updateItem) Execute(c *fiber.Ctx) {
 			SetStatus(consts.APIStatusError).
 			SetMessage(consts.ResponseMessageInvalidRequest)
 
-		c.
+		return c.
 			Status(http.StatusBadRequest).
 			JSON(res)
-		return
 	}
 
 	_, err = govalidator.ValidateStruct(req)
@@ -60,10 +59,9 @@ func (h *updateItem) Execute(c *fiber.Ctx) {
 			SetMessage(consts.ResponseMessageInvalidRequest).
 			SetErrors(err.Error())
 
-		c.
+		return c.
 			Status(http.StatusBadRequest).
 			JSON(res)
-		return
 	}
 
 	updateStatusMap := map[string]fn{
@@ -80,10 +78,9 @@ func (h *updateItem) Execute(c *fiber.Ctx) {
 			SetStatus(consts.APIStatusError).
 			SetMessage(consts.ResponseMessageFailedProcessData)
 
-		c.
+		return c.
 			Status(http.StatusInternalServerError).
 			JSON(res)
-		return
 	}
 
 	if rows <= 0 {
@@ -91,17 +88,14 @@ func (h *updateItem) Execute(c *fiber.Ctx) {
 			SetStatus(consts.APIStatusError).
 			SetMessage(consts.ResponseMessageNoDataUpdated)
 
-		c.
+		return c.
 			Status(http.StatusUnprocessableEntity).
 			JSON(res)
-		return
 	}
 
 	res := response.
 		SetStatus(consts.APIStatusSuccess).
 		SetMessage(consts.ResponseMessageSuccessUpdateData)
 
-	c.JSON(res)
-
-	return
+	return c.JSON(res)
 }

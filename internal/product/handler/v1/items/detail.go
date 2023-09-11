@@ -3,7 +3,7 @@ package items
 import (
 	"net/http"
 
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"github.com/verryp/gue-eco-test/internal/product/common"
 	"github.com/verryp/gue-eco-test/internal/product/consts"
 	"github.com/verryp/gue-eco-test/internal/product/handler"
@@ -19,7 +19,7 @@ func NewItemDetail(opt *handler.Option) handler.Handler {
 	}
 }
 
-func (h *itemDetail) Execute(c *fiber.Ctx) {
+func (h *itemDetail) Execute(c *fiber.Ctx) error {
 	var (
 		id       = c.Params("id")
 		ctx      = c.Context()
@@ -32,10 +32,9 @@ func (h *itemDetail) Execute(c *fiber.Ctx) {
 			SetStatus(consts.APIStatusError).
 			SetMessage(consts.ResponseMessageFailedProcessData)
 
-		c.
+		return c.
 			Status(http.StatusInternalServerError).
 			JSON(res)
-		return
 	}
 
 	if item == nil {
@@ -43,11 +42,9 @@ func (h *itemDetail) Execute(c *fiber.Ctx) {
 			SetStatus(consts.APIStatusError).
 			SetMessage(consts.ResponseMessageDataNotFound)
 
-		c.
+		return c.
 			Status(http.StatusUnprocessableEntity).
 			JSON(res)
-
-		return
 	}
 
 	res := response.
@@ -55,7 +52,5 @@ func (h *itemDetail) Execute(c *fiber.Ctx) {
 		SetMessage(consts.ResponseMessageSuccessFoundData).
 		SetData(item)
 
-	c.JSON(res)
-
-	return
+	return c.JSON(res)
 }
