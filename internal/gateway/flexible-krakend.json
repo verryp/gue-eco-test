@@ -229,7 +229,7 @@
       "host": [
         "http://gue-order:8082"
       ],
-      "url_pattern": "/v1/checkout"
+      "url_pattern": "/v1/orders/checkout"
     }
   ]
 },
