@@ -26,5 +26,7 @@ type (
 		FindByID(ctx context.Context, id string) (resp *presentation.ItemListResponse, err error)
 		Create(ctx context.Context, req presentation.CreateItemRequest) error
 		UpdateByID(ctx context.Context, id string, req presentation.UpdateItemRequest) (rows int64, err error)
+		DecreaseItemQuantity(ctx context.Context, id string, req presentation.UpdateItemRequest) (rows int64, err error)
+		IncreaseItemQuantity(ctx context.Context, id string, req presentation.UpdateItemRequest) (rows int64, err error)
 	}
 )

@@ -3,13 +3,13 @@ package server
 import (
 	"fmt"
 
-	"github.com/brainlabs/snowflake"
 	"github.com/verryp/gue-eco-test/internal/product/common"
 	"github.com/verryp/gue-eco-test/internal/product/driver"
 	"github.com/verryp/gue-eco-test/internal/product/handler"
 	"github.com/verryp/gue-eco-test/internal/product/model"
 	"github.com/verryp/gue-eco-test/internal/product/repository"
 	"github.com/verryp/gue-eco-test/internal/product/service"
+	"github.com/verryp/gue-eco-test/pkg/generator"
 	"gopkg.in/gorp.v2"
 )
 
@@ -62,17 +62,20 @@ func Start() {
 
 func wiringServerRepository(opt *repository.Option) *repository.Repository {
 	itemRepo := repository.NewItemsRepo(opt)
+	itemQuotaRepo := repository.NewItemQuotaRepo(opt)
+
 	return &repository.Repository{
-		Item: itemRepo,
+		Item:      itemRepo,
+		ItemQuota: itemQuotaRepo,
 	}
 }
 
 func wiringServerService(opt *service.Option) *service.Service {
 	// bootstrapping
-	sf, _ := snowflake.NewNode(0)
+	generator.New(1)
 
 	healthCheck := service.NewHealthCheckService(opt)
-	items := service.NewItemService(opt, sf.Generate().Int64())
+	items := service.NewItemService(opt)
 
 	return &service.Service{
 		HealthCheck: healthCheck,
@@ -82,4 +85,5 @@ func wiringServerService(opt *service.Option) *service.Service {
 
 func initDB(db *gorp.DbMap) {
 	db.AddTableWithName(model.Item{}, "items").SetKeys(false, "id")
+	db.AddTableWithName(model.Quota{}, "item_quotas").SetKeys(true, "id")
 }

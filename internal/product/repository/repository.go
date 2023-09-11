@@ -15,15 +15,21 @@ type (
 	}
 
 	Repository struct {
-		Item ItemRepo
+		Item      ItemRepo
+		ItemQuota ItemQuotaRepo
 	}
 )
 
 type (
 	ItemRepo interface {
-		Fetch(ctx context.Context) (items []model.Item, count int64, err error)
-		FindByID(ctx context.Context, id string) (item *model.Item, err error)
-		Create(ctx context.Context, item *model.Item) error
-		Update(ctx context.Context, item *model.Item) (int64, error)
+		Fetch(ctx context.Context) (items []model.ItemQuota, count int64, err error)
+		FindByID(ctx context.Context, id string) (item *model.ItemQuota, err error)
+		Create(ctx context.Context, p *model.ParamCreateItem) (err error)
+		Update(ctx context.Context, item *model.ParamCreateItem) (int64, error)
+	}
+
+	ItemQuotaRepo interface {
+		FindByItemID(ctx context.Context, itemID string) (quota *model.Quota, err error)
+		Update(ctx context.Context, quota *model.Quota) (int64, error)
 	}
 )
