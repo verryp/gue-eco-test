@@ -1,0 +1,19 @@
+log:
+  level: "debug"
+
+server:
+  host: "gue-order"
+  port: "8082"
+
+db:
+  host: "gue-mariadb"
+  port: "3306"
+  username: "root"
+  password: "root"
+  name: "gue_eco_order_db"
+
+dependency:
+  product:
+    base_url: "http://gue-product:8081"
+    get_detail_item_path: "/v1/items"
+    update_item_path: "/v1/items"

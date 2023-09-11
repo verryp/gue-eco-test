@@ -1,0 +1,13 @@
+log:
+  level: "debug"
+
+server:
+  host: "gue-product"
+  port: "8081"
+
+db:
+  host: "gue-mariadb"
+  port: "3306"
+  username: "root"
+  password: "root"
+  name: "gue_eco_product_db"

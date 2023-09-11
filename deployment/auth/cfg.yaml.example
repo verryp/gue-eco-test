@@ -1,0 +1,23 @@
+log:
+  level: "debug"
+ 
+server:
+  host: "gue-auth"
+  port: "8083"
+
+db:
+  host: "gue-mariadb"
+  port: "3306"
+  username: "root"
+  password: "root"
+  name: "gue_eco_auth_db"
+
+redis:
+  host: "gue-redis:6379"
+  password: "root"
+  db: 0
+
+token_expiry:
+  guest: 86400 # a day
+  access: 86400 # a day
+  refresh: 2592000 # a month
