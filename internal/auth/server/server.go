@@ -75,10 +75,12 @@ func Start() {
 func wiringServerRepository(opt *repository.Option) *repository.Repository {
 	userRepo := repository.NewUserRepo(opt)
 	clientRepo := repository.NewClientRepo(opt)
+	activityLog := repository.NewActivityLogRepo(opt)
 
 	return &repository.Repository{
-		User:   userRepo,
-		Client: clientRepo,
+		User:        userRepo,
+		Client:      clientRepo,
+		ActivityLog: activityLog,
 	}
 }
 
@@ -98,4 +100,5 @@ func wiringServerService(opt *service.Option) *service.Service {
 func initDB(db *gorp.DbMap) {
 	db.AddTableWithName(model.User{}, "users").SetKeys(false, "id")
 	db.AddTableWithName(model.Client{}, "clients").SetKeys(true, "id")
+	db.AddTableWithName(model.ActivityLog{}, "activity_logs").SetKeys(true, "id")
 }

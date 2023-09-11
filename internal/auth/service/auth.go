@@ -96,6 +96,18 @@ func (svc *authSvc) ValidateToken(ctx context.Context, token string) (*presentat
 		return nil, fmt.Errorf(msg)
 	}
 
+	if err = svc.Repository.ActivityLog.Create(ctx, &model.ActivityLog{
+		// todo: fix ASAP if the gateway plugin if there's already built
+		UserID:       cast.ToInt64(validatedToken.User.ID),
+		IPAddress:    "",
+		UserAgent:    "",
+		PathEndpoint: "",
+		CreatedAt:    time.Now(),
+	}); err != nil {
+		// note! not terminated, only for logging
+		svc.Log.Err(err).Msg("failed log the user activity on db")
+	}
+
 	return &presentation.ValidateTokenResponse{
 		Client: validatedToken.Client,
 		User:   validatedToken.User,

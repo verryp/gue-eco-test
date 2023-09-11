@@ -15,8 +15,9 @@ type (
 	}
 
 	Repository struct {
-		User   UserRepo
-		Client ClientRepo
+		User        UserRepo
+		Client      ClientRepo
+		ActivityLog ActivityLog
 	}
 )
 
@@ -30,5 +31,9 @@ type (
 	ClientRepo interface {
 		FindByAPIKey(ctx context.Context, apiKey string) (cl *model.Client, err error)
 		FindByID(ctx context.Context, id string) (cl *model.Client, err error)
+	}
+
+	ActivityLog interface {
+		Create(ctx context.Context, log *model.ActivityLog) error
 	}
 )
