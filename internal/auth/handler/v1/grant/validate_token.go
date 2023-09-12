@@ -7,6 +7,8 @@ import (
 	"github.com/verryp/gue-eco-test/internal/auth/common"
 	"github.com/verryp/gue-eco-test/internal/auth/consts"
 	"github.com/verryp/gue-eco-test/internal/auth/handler"
+	"github.com/verryp/gue-eco-test/internal/auth/helper"
+	"github.com/verryp/gue-eco-test/internal/auth/presentation"
 )
 
 type validateToken struct {
@@ -25,9 +27,17 @@ func (h *validateToken) Execute(c *fiber.Ctx) error {
 		response = common.Response{}
 	)
 
-	token := c.Get("authorization")
+	token := c.Get(consts.HeaderAuthorization)
+	forwardedFor := c.Get(consts.HeaderForwardedFor)
+	userAgent := c.Get(consts.HeaderUserAgent)
+	pathActivity := c.Get(consts.HeaderPathSource)
 
-	resp, err := h.Service.Auth.ValidateToken(ctx, token)
+	resp, err := h.Service.Auth.ValidateToken(ctx, presentation.ValidateTokenRequest{
+		IPAddress: helper.TrimHeaderIPAddress(forwardedFor),
+		UserAgent: userAgent,
+		Path:      pathActivity,
+		Token:     token,
+	})
 	if err != nil {
 		h.Log.Error().Msg(err.Error())
 

@@ -46,6 +46,7 @@ func (rtr *router) Route() *fiber.App {
 	health := app.Group("health")
 	health.Get("/readiness", hcHandler.Readiness)
 
+	inV1 := app.Group("in/v1")
 	v1 := app.Group("v1", middleware.ValidateClient)
 
 	item := v1.Group("/items")
@@ -53,6 +54,10 @@ func (rtr *router) Route() *fiber.App {
 	item.Get("/:id", itemDetail.Execute)
 	item.Post("/", middleware.ValidateUser, itemCreate.Execute)
 	item.Put("/:id", middleware.ValidateUser, itemUpdate.Execute)
+
+	itemV1 := inV1.Group("/items")
+	itemV1.Put("/:id", itemUpdate.Execute)
+	itemV1.Get("/:id", itemDetail.Execute)
 
 	return app
 }

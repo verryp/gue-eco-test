@@ -76,8 +76,8 @@ func (svc *authSvc) ClientAuthorization(ctx context.Context, apiKey, pathURL str
 	}, nil
 }
 
-func (svc *authSvc) ValidateToken(ctx context.Context, token string) (*presentation.ValidateTokenResponse, error) {
-	validatedToken, err := svc.Authenticator.Authenticate(ctx, helper.SplitHeaderBearerToken(token))
+func (svc *authSvc) ValidateToken(ctx context.Context, req presentation.ValidateTokenRequest) (*presentation.ValidateTokenResponse, error) {
+	validatedToken, err := svc.Authenticator.Authenticate(ctx, helper.SplitHeaderBearerToken(req.Token))
 	if err != nil {
 		svc.Log.Err(err).Msg("failed authenticate token")
 		return nil, err
@@ -96,16 +96,17 @@ func (svc *authSvc) ValidateToken(ctx context.Context, token string) (*presentat
 		return nil, fmt.Errorf(msg)
 	}
 
-	if err = svc.Repository.ActivityLog.Create(ctx, &model.ActivityLog{
-		// todo: fix ASAP if the gateway plugin if there's already built
-		UserID:       cast.ToInt64(validatedToken.User.ID),
-		IPAddress:    "",
-		UserAgent:    "",
-		PathEndpoint: "",
-		CreatedAt:    time.Now(),
-	}); err != nil {
-		// note! not terminated, only for logging
-		svc.Log.Err(err).Msg("failed log the user activity on db")
+	if validatedToken.User != nil {
+		if err = svc.Repository.ActivityLog.Create(ctx, &model.ActivityLog{
+			UserID:       cast.ToInt64(validatedToken.User.ID),
+			IPAddress:    req.IPAddress,
+			UserAgent:    req.UserAgent,
+			PathEndpoint: req.Path,
+			CreatedAt:    time.Now(),
+		}); err != nil {
+			// note! not terminated, only for logging
+			svc.Log.Err(err).Msg("failed log the user activity on db")
+		}
 	}
 
 	return &presentation.ValidateTokenResponse{

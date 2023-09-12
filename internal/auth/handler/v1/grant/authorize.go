@@ -1,6 +1,7 @@
 package grant
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -26,7 +27,9 @@ func (h *clientAuthorization) Execute(c *fiber.Ctx) error {
 	)
 
 	// !note: this is must be by db, but simplify with hardcode
-	apiKey := c.Get("api_key")
+	apiKey := c.Get("authorization")
+
+	fmt.Println("apikey", apiKey)
 
 	token, err := h.Service.Auth.ClientAuthorization(ctx, apiKey, string(c.Request().URI().Path()))
 	if err != nil {
