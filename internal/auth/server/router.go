@@ -6,6 +6,7 @@ import (
 	"github.com/verryp/gue-eco-test/internal/auth/handler"
 	"github.com/verryp/gue-eco-test/internal/auth/handler/v1/grant"
 	"github.com/verryp/gue-eco-test/internal/auth/handler/v1/register"
+	"github.com/verryp/gue-eco-test/internal/auth/middleware"
 )
 
 type (
@@ -51,29 +52,13 @@ func (rtr *router) Route() *fiber.App {
 	v1 := app.Group("v1")
 
 	auth := v1.Group("/auth")
-	auth.Post("/signup", signup.Execute)
 
+	auth.Post("/signup", middleware.ValidateClient, signup.Execute)
 	auth.Post("/authorize", authorizeClient.Execute)
 	auth.Post("/token", validateToken.Execute)
-	auth.Post("/signin", func(c *fiber.Ctx) error {
-		clientId := c.Get("X-Client-Id")
-
-		if clientId == "" {
-			return c.SendStatus(fiber.StatusUnauthorized)
-		}
-
-		return c.Next()
-	}, signIn.Execute)
-	auth.Post("/retoken", func(c *fiber.Ctx) error {
-		clientId := c.Get("X-Client-Id")
-
-		if clientId == "" {
-			return c.SendStatus(fiber.StatusUnauthorized)
-		}
-
-		return c.Next()
-	}, reToken.Execute)
-	auth.Post("/signout", signOut.Execute)
+	auth.Post("/signin", middleware.ValidateClient, signIn.Execute)
+	auth.Post("/retoken", middleware.ValidateUser, reToken.Execute)
+	auth.Post("/signout", middleware.ValidateUser, signOut.Execute)
 
 	return app
 }

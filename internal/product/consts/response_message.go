@@ -24,4 +24,7 @@ const (
 
 	// ResponseMessageNoDataUpdated const
 	ResponseMessageNoDataUpdated = "No data is updated"
+
+	// ResponseMessageUnauthorized const
+	ResponseMessageUnauthorized = "Client unauthorized"
 )
