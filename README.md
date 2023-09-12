@@ -19,7 +19,9 @@ Due to time constraints, since my load on my current company. Here may be some c
 - I usually manage the response message dynamically, but for now i'm not provided it
 - I really sorry can finish the gateway for running well. Since i have issue "unsupported relocation type" for build my custom plugin on Mac M1.
   ![failed-build-plugin.png](docs/issue/failed-build-plugin.png)
-  >   but i'm still trying to find out the issue.
+  >   - but i'm still trying to find out the issue.
+  >   - **updated**: already resolved it but by using the old Krakend version 1.2.0 and adding `--platform=linux/amd64` build the image
+  >   - reference: https://stackoverflow.com/questions/65612411/forcing-docker-to-use-linux-amd64-platform-by-default-on-macos
 
 ## Diagram
 ### product db
