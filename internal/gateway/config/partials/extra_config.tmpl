@@ -1,10 +1,11 @@
 {
-  "telemetry/logging": {
+  "github_com/devopsfaith/krakend-gologging": {
     "level": "DEBUG",
     "prefix": "[KRAKEND]",
+    "syslog": false,
     "stdout": true
   },
-  "security/cors": {
+  "github_com/devopsfaith/krakend-cors": {
     "allow_origins": [
       "*"
     ],
@@ -27,7 +28,7 @@
     ],
     "max_age": "12h"
   },
-  "plugin/http-server": {
+  "github_com/devopsfaith/krakend/transport/http/server/handler": {
     "name": "authentication",
     "auth_url": "http://gue-auth:8083"
   }

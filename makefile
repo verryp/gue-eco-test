@@ -46,5 +46,10 @@ test:
 
 build_plugin:
 	@echo "Compiling plugins..."
-	@go build -buildmode=plugin -v -o ./internal/gateway/plugins/authentication.so ./internal/gateway/plugins/authentication.go
+	@go build -buildmode=plugin -v -o /etc/krakend/plugins/authentication.so ./internal/gateway/plugins/authentication.go
 	@echo "Done compiling plugin"
+
+build_config:
+	@echo "Compiling config..."
+	FC_ENABLE=1 FC_SETTINGS="internal/gateway/config/settings" FC_PARTIALS="internal/gateway/config/partials" FC_TEMPLATES="internal/gateway/config/templates" FC_OUT=/etc/krakend/krakend.json /usr/bin/krakend check -d -c "internal/gateway/krakend.json"
+	@echo "Done compiling config"

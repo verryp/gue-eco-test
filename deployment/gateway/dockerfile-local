@@ -1,0 +1,15 @@
+FROM --platform=linux/amd64 golang:1.14.4-buster
+
+RUN apt-get update && \
+        apt-get install -y ca-certificates && \
+        update-ca-certificates
+
+WORKDIR /app
+COPY . /app
+ADD ./bin/krakend /usr/bin/krakend
+RUN make build_plugin && make build_config
+
+WORKDIR /etc/krakend
+
+ENTRYPOINT [ "/usr/bin/krakend" ]
+CMD [ "run", "-c", "/etc/krakend/krakend.json" ]

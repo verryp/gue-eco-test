@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strconv"
@@ -17,18 +17,21 @@ const (
 	PluginName      = "authentication"
 	ConfigAuthURL   = "auth_url"
 	GatewayName     = "krakend"
-	TokenBearerType = "Bearer"
+	TokenBearerType = "bearer"
 
-	HeaderAuthorization = "Authorization"
-	HeaderGateway       = "X-Gateway"
-	HeaderForwardedFor  = "X-Forwarded-For"
-	HeaderContentType   = "Content-Type"
-	HeaderContentJson   = "application/json"
-	HeaderClientID      = "X-Client-Id"
-	HeaderClientName    = "X-Client-Name"
-	HeaderUserID        = "X-User-Id"
-	HeaderUserName      = "X-User-Name"
-	HeaderUserEmail     = "X-User-Email"
+	HeaderAuthorization  = "Authorization"
+	HeaderGateway        = "X-Gateway"
+	HeaderForwardedFor   = "X-Forwarded-For"
+	HeaderPathSource     = "X-Path-Source"
+	HeaderContentType    = "Content-Type"
+	HeaderContentJson    = "application/json"
+	HeaderClientID       = "X-Client-Id"
+	HeaderClientName     = "X-Client-Name"
+	HeaderUserID         = "X-User-Id"
+	HeaderUserName       = "X-User-Name"
+	HeaderUserEmail      = "X-User-Email"
+	HeaderContentOptions = "X-Content-Type-Options"
+	HeaderContentNoSniff = "nosniff"
 
 	PathURLV1Authorize = "/auth/v1/authorize"
 
@@ -71,7 +74,7 @@ type (
 	}
 
 	Response struct {
-		Name    string `json:"name"`
+		Status  string `json:"status"`
 		Message string `json:"message"`
 		Data    *Data  `json:"data,omitempty"`
 	}
@@ -121,7 +124,7 @@ func (r registerer) registerHandlers(ctx context.Context, extra map[string]inter
 		if authorization != nil && authorization.Type == TokenBearerType && authorization.Value != "" {
 			forwardedIP := r.Header.Get(HeaderForwardedFor)
 
-			authResponse, respStatus := validateToken(extra, authorization.Value, forwardedIP)
+			authResponse, respStatus := validateToken(extra, authorization.Value, forwardedIP, r.URL.Path)
 			if ResponseSuccess != respStatus {
 				failureResponse(w, status)
 				return
@@ -215,10 +218,11 @@ func findSlice(slice []string, val string) bool {
 }
 
 func authenticationFailureResponse(w http.ResponseWriter) {
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set(HeaderContentType, HeaderContentJson)
+	w.Header().Set(HeaderContentOptions, HeaderContentNoSniff)
 	w.WriteHeader(http.StatusUnauthorized)
 	bodyString, _ := json.Marshal(Response{
-		Name:    ResponseAuthFailure,
+		Status:  ResponseAuthFailure,
 		Message: "authentication failure",
 	})
 	_, _ = fmt.Fprintln(w, string(bodyString))
@@ -233,11 +237,11 @@ func failureResponse(w http.ResponseWriter, status string) {
 	}
 }
 
-func validateToken(extra map[string]interface{}, token, forwardedIP string) (*Response, string) {
+func validateToken(extra map[string]interface{}, token, forwardedIP, pathSource string) (*Response, string) {
 	client := &http.Client{Timeout: HttpTimeout}
 
 	BaseURL, _ := extra[ConfigAuthURL]
-	authenticationURL := fmt.Sprintf("%s/%s", BaseURL, "/v1/auth/token")
+	authenticationURL := fmt.Sprintf("%s/%s", BaseURL, "v1/auth/token")
 	req, err := http.NewRequest(http.MethodPost, authenticationURL, nil)
 	if err != nil {
 		return nil, ResponseAuthFailure
@@ -245,6 +249,7 @@ func validateToken(extra map[string]interface{}, token, forwardedIP string) (*Re
 	req.Header.Set(HeaderContentType, HeaderContentJson)
 	req.Header.Set(HeaderAuthorization, fmt.Sprintf("%s %s", TokenBearerType, token))
 	req.Header.Set(HeaderForwardedFor, forwardedIP)
+	req.Header.Set(HeaderPathSource, pathSource)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -256,7 +261,7 @@ func validateToken(extra map[string]interface{}, token, forwardedIP string) (*Re
 		return nil, ResponseAuthFailure
 	}
 
-	respBodyBytes, err := io.ReadAll(resp.Body)
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, ResponseAuthFailure
 	}
