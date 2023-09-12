@@ -1,0 +1,775 @@
+{
+	"info": {
+		"_postman_id": "b7c00b74-b6a9-465e-b705-9359ea48c7a1",
+		"name": "API Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16004791"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Signup",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"lorem\",\n    \"email\": \"ipsum@gmail.com\",\n    \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/auth/v1/signup",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"auth",
+										"v1",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.unset(\"ACCESS_TOKEN\");",
+											"pm.collectionVariables.unset(\"REFRESH_TOKEN\");",
+											"",
+											"pm.test(\"Cache Data\", function () {",
+											"  var json = pm.response.json();",
+											"  pm.collectionVariables.set(\"ACCESS_TOKEN\", json.data.access_token.value);",
+											"  pm.collectionVariables.set(\"REFRESH_TOKEN\", json.data.refresh_token.value);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{REFRESH_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "verry@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": "verry",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API_URL}}/auth/v1/retoken",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"auth",
+										"v1",
+										"retoken"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.unset(\"ACCESS_TOKEN\");",
+											"pm.collectionVariables.unset(\"REFRESH_TOKEN\");",
+											"",
+											"pm.test(\"Cache Data\", function () {",
+											"  var json = pm.response.json();",
+											"  pm.collectionVariables.set(\"ACCESS_TOKEN\", json.data.access_token.value);",
+											"  pm.collectionVariables.set(\"REFRESH_TOKEN\", json.data.refresh_token.value);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibG9yZW0iLCJlbWFpbCI6ImxvcmVtQGdtYWlsLmNvbSIsImNsaWVudCI6IkdVRSBFY29zeXN0ZW0iLCJ0b2tlbl90eXBlIjoiYWNjZXNzX3Rva2VuIiwiaXNzIjoiL3YxL2F1dGgvc2lnbmluIiwic3ViIjoiMTY5OTEzMDgzMTA5NzgyNzMyOCIsImF1ZCI6WyIxIl0sImV4cCI6MTY5NDQwOTEyOSwiaWF0IjoxNjk0MzIyNzI5LCJqdGkiOiJmYTBiMTMzZi02NjBjLTU3NmQtYjk4Yy00ZTdiYmNlOGI4NjgifQ.EAWqPLrXil-Fo_Rw4VvHqjXBK4LSO8U6Uvr2sgAeIc9GxkvYFJzaO-Z0hcRbA9y69O-yy0PpZX9fAsOQsS1BN88PGDBJS0fY8JhI-k2CmUDjl78KV-qChRlzMJ3Voi5GaEktdg09G9JNB6stceFTXMKptwU8_DZnJU56Fb08P1FCWgJyr8HLBQg1y6dNtn2HF7L536Shf5Vd9EQ-vYqsbmt9fg-8uYvUz-lNuthoZ0v70IyFGq7WoGWgnCHadX-Isk8FXs0dutPXkPAKnvMKmZvbj5p8ez-v_bwqpxQcx4OCwOXW-HyBnsW5IkpYdNHMMTsg-mLi6trBeUW1pHybwQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"lorem@gmail.com\",\n    \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/auth/v1/signin",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"auth",
+										"v1",
+										"signin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "verry@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": "verry",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API_URL}}/auth/v1/signout",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"auth",
+										"v1",
+										"signout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Client",
+					"item": [
+						{
+							"name": "Client Authorization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.unset(\"GUEST_TOKEN\");",
+											"",
+											"pm.test(\"Cache Data\", function () {",
+											"  var json = pm.response.json();",
+											"  pm.collectionVariables.set(\"GUEST_TOKEN\", json.data.guest_token);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "{{API_KEY}}",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "api_key",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/auth/v1/authorize",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"auth",
+										"v1",
+										"authorize"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "lorem",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/auth/echo",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"auth",
+								"echo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Items",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API_URL}}/products/v1/items",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"products",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "detail",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API_URL}}/products/v1/items/:id",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"products",
+										"v1",
+										"items",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1701264584301613056"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "verry@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": "verry",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"lorem\",\n    \"quota_per_days\": 5,\n    \"quantity\": 2,\n    \"category\": \"drug\",\n    \"price\": 20000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/products/v1/items",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"products",
+										"v1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "verry@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": "verry",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/products/v1/items/:id",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"products",
+										"v1",
+										"items",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1701264584301613056"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Cart",
+					"item": [
+						{
+							"name": "Add To Cart",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "verry@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": "verry",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"item_id\": \"1701264584301613056\",\n    \"quantity\": 3,\n    \"customer_note\": \"sayalal\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/orders/v1/carts",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"orders",
+										"v1",
+										"carts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "Checkout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "lorem@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": " testing",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cart_id\": \"1701305514048098304\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/orders/v1/checkout",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"orders",
+										"v1",
+										"checkout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "lorem@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": " testing",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"CANCELED\",\n    \"reason\": \"item suddenly out of stock\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/orders/v1/orders/:order_id",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"orders",
+										"v1",
+										"orders",
+										":order_id"
+									],
+									"variable": [
+										{
+											"key": "order_id",
+											"value": "1701305514048098304"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-User-Email",
+										"value": "verry@gmail.com",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-Client-Id",
+										"value": "1",
+										"type": "text"
+									},
+									{
+										"key": "X-User-Name",
+										"value": "verry",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API_URL}}/orders/v1/orders",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"orders",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/health",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "API_KEY",
+			"value": "116wIdYjuZUEF0OrJpaGIFP099uwhSXF",
+			"type": "string"
+		},
+		{
+			"key": "GUEST_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": ""
+		}
+	]
+}

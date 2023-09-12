@@ -73,8 +73,7 @@ func (repo *itemsRepo) FindByID(ctx context.Context, id string) (item *model.Ite
 			i.id, i.name, iq.date_limiter, iq.quota_remaining, i.quota_per_days, i.quantity, i.category, i.price, i.created_at, i.updated_at
 		FROM
 			items i
-		JOIN
-			item_quotas iq
+		JOIN item_quotas iq ON i.id = iq.item_id
 		WHERE
 			i.deleted_at IS NULL
 			AND iq.deleted_at IS NULL

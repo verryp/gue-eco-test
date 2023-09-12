@@ -1,0 +1,261 @@
+{
+	"info": {
+		"_postman_id": "11f62c72-40d8-4df1-9a33-c5f17eff6a8f",
+		"name": "Order Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16004791"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "readiness",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/health/readiness",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Add To Cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"item_id\": \"1701264584301613056\",\n    \"quantity\": 3,\n    \"customer_note\": \"sayalal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/carts",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"carts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cart_id\": \"1698715582385360896\",\n    \"total_amount\": 1231231\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/orders/checkout",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"orders",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"CANCELED\",\n    \"reason\": \"syalala\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/orders/:order_id",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"orders",
+								":order_id"
+							],
+							"variable": [
+								{
+									"key": "order_id",
+									"value": "1698715582385360896"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/v1/orders",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "http://localhost:9081",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "238b9185-3ac8-4171-a25e-cbbb791b1f6c",
+		"name": "Auth Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16004791"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "readiness",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/health/readiness",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"lorem\",\n    \"email\": \"lorem@gmail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/auth/signup",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Grant",
+			"item": [
+				{
+					"name": "Grant Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"GUEST_TOKEN\");",
+									"",
+									"pm.test(\"Cache Data\", function () {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set(\"GUEST_TOKEN\", json.data.guest_token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{API_KEY}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "api_key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/v1/auth/authorize",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"authorize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{GUEST_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{ACCESS_TOKEN}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{REFRESH_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/v1/auth/token",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"ACCESS_TOKEN\");",
+									"pm.collectionVariables.unset(\"REFRESH_TOKEN\");",
+									"",
+									"pm.test(\"Cache Data\", function () {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set(\"ACCESS_TOKEN\", json.data.access_token.value);",
+									"  pm.collectionVariables.set(\"REFRESH_TOKEN\", json.data.refresh_token.value);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"lorem@gmail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/auth/signin",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.unset(\"ACCESS_TOKEN\");",
+									"pm.collectionVariables.unset(\"REFRESH_TOKEN\");",
+									"",
+									"pm.test(\"Cache Data\", function () {",
+									"  var json = pm.response.json();",
+									"  pm.collectionVariables.set(\"ACCESS_TOKEN\", json.data.access_token.value);",
+									"  pm.collectionVariables.set(\"REFRESH_TOKEN\", json.data.refresh_token.value);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{REFRESH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/v1/auth/retoken",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"retoken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/v1/auth/signout",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"signout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "http://localhost:9082",
+			"type": "string"
+		},
+		{
+			"key": "API_KEY",
+			"value": "116wIdYjuZUEF0OrJpaGIFP099uwhSXF",
+			"type": "string"
+		},
+		{
+			"key": "GUEST_TOKEN",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJHVUUgRWNvc3lzdGVtIiwidG9rZW5fdHlwZSI6Imd1ZXN0X3Rva2VuIiwiaXNzIjoiL3YxL2F1dGgvYXV0aG9yaXplIiwiYXVkIjpbIjEiXSwiZXhwIjoxNjk0MzIzNDg4LCJpYXQiOjE2OTQyMzcwODgsImp0aSI6ImVlOTFlZGNmLTJjZGItNWYzYi1lNjE2LTk4OTgyYjkzMjM1NiJ9.SxNx3vfoPw_EqvkxoJWunJKVJm3U3SQF8TYX2mH-S54AN3sBY-PZexNzfnJ-Wv0-Y7iYTElDlLhF3POJvphjOfpMZ5HtrR1YySI8POB4LK9XoRq63iaVvA2QVwsiHnSWU25lPFLcsClC1SzbR-0GZpIDuD5zKT5Pi8ggrTkyVwxI6S8il2_sRH5PMdxvi19N-FqeEN9fxEmz0vPGzQbAEihGlXP6ZzlVo2CJHfNzEFAlwgiuH9YkCVqMUzBrPNokXP-WYIDl0lPSAhIy1Q_ix3HfhVO7UpHjbqbHuYidbJ1f6VYY0VU6A17WPi90UJOo4SfFz8lNHdze6Eu7MmsrMA"
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibG9yZW0iLCJlbWFpbCI6ImxvcmVtQGdtYWlsLmNvbSIsImNsaWVudCI6IkdVRSBFY29zeXN0ZW0iLCJ0b2tlbl90eXBlIjoiYWNjZXNzX3Rva2VuIiwiaXNzIjoiL3YxL2F1dGgvc2lnbmluIiwic3ViIjoiMTY5OTEzMDgzMTA5NzgyNzMyOCIsImF1ZCI6WyIxIl0sImV4cCI6MTY5NDQwOTEyOSwiaWF0IjoxNjk0MzIyNzI5LCJqdGkiOiJmYTBiMTMzZi02NjBjLTU3NmQtYjk4Yy00ZTdiYmNlOGI4NjgifQ.EAWqPLrXil-Fo_Rw4VvHqjXBK4LSO8U6Uvr2sgAeIc9GxkvYFJzaO-Z0hcRbA9y69O-yy0PpZX9fAsOQsS1BN88PGDBJS0fY8JhI-k2CmUDjl78KV-qChRlzMJ3Voi5GaEktdg09G9JNB6stceFTXMKptwU8_DZnJU56Fb08P1FCWgJyr8HLBQg1y6dNtn2HF7L536Shf5Vd9EQ-vYqsbmt9fg-8uYvUz-lNuthoZ0v70IyFGq7WoGWgnCHadX-Isk8FXs0dutPXkPAKnvMKmZvbj5p8ez-v_bwqpxQcx4OCwOXW-HyBnsW5IkpYdNHMMTsg-mLi6trBeUW1pHybwQ"
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibG9yZW0iLCJlbWFpbCI6ImxvcmVtQGdtYWlsLmNvbSIsImNsaWVudCI6IkdVRSBFY29zeXN0ZW0iLCJ0b2tlbl90eXBlIjoicmVmcmVzaF90b2tlbiIsImlzcyI6Ii92MS9hdXRoL3NpZ25pbiIsInN1YiI6IjE2OTkxMzA4MzEwOTc4MjczMjgiLCJhdWQiOlsiMSJdLCJleHAiOjE2OTY5MTQ3MjksImlhdCI6MTY5NDMyMjcyOSwianRpIjoiZmEwYjEzM2YtNjYwYy01NzZkLWI5OGMtNGU3YmJjZThiODY4In0.qTYea0h8EA53DWqH6wBfg3Oh10WAC3rL4ALu0SpYFlGwQxy0-6cqcIYipzdxeg9CQ78neRs0vxxyDBFomyJ0xzhJPtWJuDyf9kpjNR39IYMMpL38rEep3pFMOVFWulzuUmDPplDfqPbYDTOa4ATAw90hjYMdF2oGV5AjO_LoO2hue21Y6zoHdZm3J9BkwS0xlGkkXeU3P7HiLSqtIfxzWdj8S-6nYlfUTqfwdNNBxl6n8mEMrcbMv_p-7sNdLdEBj4axnWTpd3Eq_SZWNbloj5RDfNtsCJYl-C-6uVYP4x_jbHIRW40cfuDrcv00VO_vkh2Q7m6R70Nr6Egwchb5fg"
+		}
+	]
+}

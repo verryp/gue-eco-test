@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "ad4f7ed9-9fbb-4cc8-bd5d-233a621b787c",
+		"name": "Product Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16004791"
+	},
+	"item": [
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/v1/items",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Client-Id",
+								"value": " 1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/v1/items/:id",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1698292558670594048"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"lorem\",\n    \"quota_per_days\": 5,\n    \"quantity\": 2,\n    \"category\": \"drug\",\n    \"price\": 20000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/items",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"kiyaa\",\n    \"quota_per_days\": 11\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/items/:id",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1698292558670594048"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "decrease item",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 1,\n    \"grant_type\": \"decrease\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/items/:id",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1701264584301613056"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "increase item",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-User-Email",
+								"value": "verry@gmail.com",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-Client-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "X-User-Name",
+								"value": "verry",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 1,\n    \"grant_type\": \"increase\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/v1/items/:id",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"v1",
+								"items",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1701264584301613056"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "readiness",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/health/readiness",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "http://localhost:9080",
+			"type": "string"
+		}
+	]
+}

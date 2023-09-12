@@ -8,8 +8,8 @@ help:
 	@echo 'Management commands for ${APP_NAME}:'
 	@echo
 	@echo 'Usage:'
-	@echo '    make build                              Compile the project.'
-	@echo '    make run ARGS=                          Run with supplied arguments.'
+	@echo '    make dep                                Update all dependencies'
+	@echo '    make run                                Run all projects.'
 	@echo '    make test                               Run tests on a compiled project.'
 	@echo '    make compose.up                         Run all container and app.'
 	@echo '    make compose.down                       Down all container.'
@@ -21,20 +21,13 @@ dep:
 	@echo "Update all dependencies..."
 	go get ./...
 
-.PHONY: build
-build: dep
-	@echo "Building ${APP_DIR}"
-	go build -ldflags "-w" -o bin/${APP_NAME}/product ${APP_DIR}/cmd/product/main.go
-
 .PHONY: run
-run:
-	@echo "Running ${APP_NAME}..."
-	go run ${APP_DIR}/main.go ${ARGS}
+run: compose.up
 
 .PHONY: compose.up
 compose.up:
 	@echo "Running all container..."
-	docker-compose -f deployment/docker-compose.yaml --project-directory . up -d --build
+	docker-compose -f deployment/docker-compose.yaml --project-directory . up --build
 
 .PHONY: compose.down
 compose.down:
@@ -47,6 +40,9 @@ compose.clean:
 	docker-compose -f deployment/docker-compose.yaml --project-directory . stop
 	docker-compose -f deployment/docker-compose.yaml --project-directory . rm
 	docker-compose -f deployment/docker-compose.yaml --project-directory . down -v
+
+test:
+	@go test $$(go list ./... | grep -v /vendor/) -cover
 
 build_plugin:
 	@echo "Compiling plugins..."
